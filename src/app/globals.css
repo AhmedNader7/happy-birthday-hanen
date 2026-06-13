@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #1a0a1e;
+  --color-foreground: #f2eaf5;
+  --color-muted: #6e5f78;
+  --color-warm: #d4a0c0;
+  --color-warm-soft: #b88aa8;
+  --color-gold: #e8a0bf;
+  --color-gold-glow: #f5b8d0;
+  --color-flame: #ffe14d;
+  --color-flame-inner: #fff4b0;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-playfair);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1a0a1e;
+  color: var(--color-foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #1a0a1e; }
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 160, 192, 0.25);
+  border-radius: 2px;
+}
+
+/* ==============================
+   1. CLICK-TO-BEGIN OVERLAY
+   ============================== */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #1a0a1e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.begin-btn {
+  position: relative;
+  padding: 22px 56px;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(232, 160, 191, 0.4);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+}
+
+.begin-btn::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 100px;
+  background: radial-gradient(ellipse at center, rgba(232, 160, 191, 0.15) 0%, transparent 70%);
+  z-index: -1;
+  animation: btn-pulse 2.5s ease-in-out infinite;
+}
+
+.begin-btn:hover {
+  border-color: rgba(232, 160, 191, 0.7);
+  color: var(--color-gold);
+  box-shadow:
+    0 0 30px rgba(232, 160, 191, 0.2),
+    0 0 60px rgba(232, 160, 191, 0.1);
+}
+
+@keyframes btn-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.08); }
+}
+
+/* ==============================
+   2. MUSIC TOGGLE (top-right)
+   ============================== */
+.music-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  color: var(--color-warm-soft);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-foreground);
+}
+
+.eq-bar {
+  display: inline-block;
+  width: 2px;
+  background: var(--color-gold);
+  border-radius: 1px;
+}
+
+.eq-bar.playing {
+  animation: eq-dance var(--dur) ease-in-out infinite alternate;
+  animation-delay: var(--del);
+}
+
+@keyframes eq-dance {
+  0%   { height: 3px; }
+  100% { height: var(--h); }
+}
+
+/* ==============================
+   3. STORY TEXT
+   ============================== */
+.story-serif {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  line-height: 1.6;
+}
+
+/* ==============================
+   4. FAKE-3D ISOMETRIC CAKE
+   ============================== */
+.cake-container {
+  position: relative;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cake-layer-iso {
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Frosting ring on top of each layer */
+.cake-layer-iso::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 6%;
+  right: 6%;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 240, 245, 0.35);
+  z-index: 1;
+}
+
+/* Decorative dots around the layer */
+.cake-layer-iso::after {
+  content: "";
+  position: absolute;
+  bottom: 30%;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 240, 245, 0.12);
+}
+
+/* ==============================
+   5. CANDLE + FLAME
+   ============================== */
+.candle-stick {
+  width: 5px;
+  border-radius: 2px 2px 0 0;
+  position: relative;
+}
+
+.flame {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 10px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(
+    ellipse at bottom,
+    var(--color-flame-inner) 0%,
+    var(--color-flame) 50%,
+    rgba(255, 138, 0, 0.6) 100%
+  );
+  animation: flicker 0.5s ease-in-out infinite alternate;
+}
+
+.flame::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 225, 77, 0.2);
+  filter: blur(5px);
+  animation: flame-glow 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes flicker {
+  0%   { transform: translateX(-50%) scaleX(1) scaleY(1); opacity: 1; }
+  30%  { transform: translateX(-50%) scaleX(0.82) scaleY(1.12); opacity: 0.88; }
+  60%  { transform: translateX(-50%) scaleX(1.1) scaleY(0.88); opacity: 1; }
+  100% { transform: translateX(-50%) scaleX(0.9) scaleY(1.06); opacity: 0.92; }
+}
+
+@keyframes flame-glow {
+  0%   { opacity: 0.15; transform: translateX(-50%) scale(0.85); }
+  100% { opacity: 0.3; transform: translateX(-50%) scale(1.15); }
+}
+
+/* ==============================
+   6. BLOW BUTTON + CONFETTI
+   ============================== */
+.blow-btn {
+  padding: 16px 40px;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-warm-soft);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.blow-btn:hover {
+  border-color: rgba(232, 160, 191, 0.4);
+  color: var(--color-gold);
+  box-shadow: 0 0 24px rgba(232, 160, 191, 0.12);
+}
+
+@keyframes confettiFall {
+  0%   { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+.confetti-piece {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  animation: confettiFall linear forwards;
+}
+
+/* ==============================
+   7. SCROLL-DOWN HINT
+   ============================== */
+.scroll-hint {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-warm-soft);
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 0.8rem;
+  font-style: italic;
+  letter-spacing: 0.12em;
+  pointer-events: none;
+  text-shadow: 0 0 20px rgba(232, 160, 191, 0.15);
+}
+
+.scroll-hint-arrow {
+  display: block;
+  font-size: 1.6rem;
+  line-height: 1;
+  animation: scroll-bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%      { transform: translateY(8px); opacity: 1; }
+}
+
